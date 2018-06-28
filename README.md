@@ -1,8 +1,3 @@
-node-multi-hashing
-===============
-Cryptocurrency hashing functions for [Node Stratum Pool](https://github.com/foxer666/node-stratum-pool)
+# hmq-hash
+python hashing module for hmqcoin's hashing algo by ocminer (admin at suprnova.cc) www.suprnova.cc
 
-
-Need testing for blake algos, we have modified sph_blake.c with fresh version to make lyra2z is working right. Need tests to be sure nothing else is broken.
-
-Current version v1.0.3
