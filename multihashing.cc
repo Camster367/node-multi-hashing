@@ -44,6 +44,8 @@ extern "C" {
     #include "zr5.h"
     #include "yescrypt/yescrypt.h"
     #include "yescrypt/sha256_Y.h"
+	#include "equi.h"
+	#include "equi_144_5.h"
 }
 
 #include "boolberry.h"
@@ -53,6 +55,44 @@ extern "C" {
 
 using namespace node;
 using namespace v8;
+NAN_METHOD(equihash1445) {
+
+    if (info.Length() < 2)
+        return THROW_ERROR_EXCEPTION("Wrong number of arguments");
+
+    Local<Object> header = Nan::To<Object>(info[0]).ToLocalChecked();
+    Local<Object> solution = Nan::To<Object>(info[1]).ToLocalChecked();
+
+    if(!Buffer::HasInstance(header) || !Buffer::HasInstance(solution))
+        return THROW_ERROR_EXCEPTION("Argument should be a buffer object.");
+
+    char *hdr = Buffer::Data(header);
+    char *soln = Buffer::Data(solution);
+
+    bool result = verifyEH(hdr, soln);
+
+    info.GetReturnValue().Set(result); 
+
+}
+NAN_METHOD(equihash) {
+
+    if (info.Length() < 2)
+        return THROW_ERROR_EXCEPTION("Wrong number of arguments");
+
+    Local<Object> header = Nan::To<Object>(info[0]).ToLocalChecked();
+    Local<Object> solution = Nan::To<Object>(info[1]).ToLocalChecked();
+
+    if(!Buffer::HasInstance(header) || !Buffer::HasInstance(solution))
+        return THROW_ERROR_EXCEPTION("Argument should be a buffer object.");
+
+    char *hdr = Buffer::Data(header);
+    char *soln = Buffer::Data(solution);
+
+    bool result = verifyEH(hdr, soln);
+
+    info.GetReturnValue().Set(result); 
+
+}
 
 NAN_METHOD(lyra2rev2) {
 
