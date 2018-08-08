@@ -96,7 +96,7 @@ static void generateHash(crypto_generichash_blake2b_state *S, const uint32_t g, 
 
 // hdr -> header including nonce (140 bytes)
 // soln -> equihash solution (excluding 3 bytes with size, so 1344 bytes length)
-bool verifyEH(const char *hdr, const char *soln) {
+static bool verifyEH(const char *hdr, const char *soln) {
   const int n = 144;
   const int k = 5;
   const int collisionBitLength  = n / (k + 1);
