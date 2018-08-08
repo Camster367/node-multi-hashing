@@ -16,7 +16,7 @@
                 "hefty1.c",
                 "keccak.c",
 				"equi.c",
-				"equi_144_5.c"
+				"equi_144_5.c",
                 "lyra2.c",
                 "lyra2re.c",
                 "lyra2z.c",
