@@ -55,6 +55,18 @@ extern "C" {
 
 using namespace node;
 using namespace v8;
+NAN_METHOD(c11) {
+     if (info.Length() < 1)
+        return THROW_ERROR_EXCEPTION("You must provide one argument.");
+     Local<Object> target = Nan::To<Object>(info[0]).ToLocalChecked();
+     if(!Buffer::HasInstance(target))
+        return THROW_ERROR_EXCEPTION("Argument should be a buffer object.");
+     char * input = Buffer::Data(target);
+    char *output = (char*) malloc(sizeof(char) * 32);
+     uint32_t input_len = Buffer::Length(target);
+     c11_hash(input, output);
+     info.GetReturnValue().Set(Nan::NewBuffer(output, 32).ToLocalChecked());
+}
 NAN_METHOD(equihash1445) {
 
     if (info.Length() < 2)
