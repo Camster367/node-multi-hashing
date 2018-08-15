@@ -25,6 +25,7 @@
                 "quark.c",
                 "qubit.c",
                 "s3.c",
+				"xevan.c",
                 "scryptjane.c",
                 "scryptn.c",
                 "shavite3.c",
