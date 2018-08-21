@@ -47,6 +47,7 @@ extern "C" {
 	#include "equi.h"
 	#include "equi_144_5.h"
 	#include "xevan.h"
+	#include "sha3/sph_haval.h"
 }
 
 #include "boolberry.h"
