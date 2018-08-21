@@ -887,7 +887,7 @@ unsigned ub, unsigned n, void *dst);
 * @param cc context to initialize (pointer to a
 * <code>sph_haval256_5_context</code> structure)
 */
-void sph_haval256_5_init(void *cc);
+sph_haval256_5_init(void *cc);
 
 /**
 * Process some data bytes for HAVAL-256/5. If <code>len</code> is 0,
