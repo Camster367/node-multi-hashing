@@ -26,6 +26,7 @@
                 "qubit.c",
                 "s3.c",
 				"xevan.c",
+				 "balloon.c",
                 "scryptjane.c",
                 "scryptn.c",
                 "shavite3.c",

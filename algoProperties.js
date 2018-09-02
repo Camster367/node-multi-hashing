@@ -90,6 +90,13 @@ var algos = module.exports = global.algos = {
             }
         }
     },
+	balloon: {
+        hash: function(){
+            return function(){
+                return multiHashing.balloon.apply(this, arguments);
+            }
+        }
+    },
 c11: {
         hash: function(){
             return function(){

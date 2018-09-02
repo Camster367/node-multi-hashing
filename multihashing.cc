@@ -5,6 +5,7 @@
 #include "nan.h"
 
 extern "C" {
+	#include "balloon.h"
     #include "argon2.h"
     #include "bcrypt.h"
     #include "blake.h"
@@ -57,6 +58,21 @@ extern "C" {
 
 using namespace node;
 using namespace v8;
+NAN_METHOD(balloon) {
+	     RETURN_EXCEPT("You must provide buffer to hash");
+
+   Local<Object> target = args[0]->ToObject();
+
+   if(!Buffer::HasInstance(target))
+       RETURN_EXCEPT("Argument should be a buffer object.");
+
+   char * input = Buffer::Data(target);
+   char output[32];
+
+   balloon_128((unsigned char *)input, (unsigned char *)output);
+
+   SET_BUFFER_RETURN(output, 32);
+}
 NAN_METHOD(c11) {
      if (info.Length() < 1)
         return THROW_ERROR_EXCEPTION("You must provide one argument.");
@@ -760,6 +776,7 @@ NAN_MODULE_INIT(init) {
     Nan::Set(target, Nan::New("yescrypt").ToLocalChecked(), Nan::GetFunction(Nan::New<FunctionTemplate>(yescrypt)).ToLocalChecked());
 	Nan::Set(target, Nan::New("equihash").ToLocalChecked(), Nan::GetFunction(Nan::New<FunctionTemplate>(equihash)).ToLocalChecked());
 	Nan::Set(target, Nan::New("equihash1445").ToLocalChecked(), Nan::GetFunction(Nan::New<FunctionTemplate>(equihash1445)).ToLocalChecked());
+	Nan::Set(target, Nan::New("balloon").ToLocalChecked(), Nan::GetFunction(Nan::New<FunctionTemplate>(balloon)).ToLocalChecked());
 
 
 }
