@@ -58,6 +58,76 @@ extern "C" {
 
 using namespace node;
 using namespace v8;
+#if NODE_MAJOR_VERSION >= 4
+
+#define DECLARE_INIT(x) \
+    void x(Local<Object> exports)
+
+#define DECLARE_FUNC(x) \
+    void x(const FunctionCallbackInfo<Value>& args)
+
+#define DECLARE_SCOPE \
+    v8::Isolate* isolate = args.GetIsolate();
+
+#define SET_BUFFER_RETURN(x, len) \
+    args.GetReturnValue().Set(Buffer::Copy(isolate, x, len).ToLocalChecked());
+
+#define SET_BOOLEAN_RETURN(x) \
+    args.GetReturnValue().Set(Boolean::New(isolate, x));
+
+#define RETURN_EXCEPT(msg) \
+    do { \
+        isolate->ThrowException(Exception::Error(String::NewFromUtf8(isolate, msg))); \
+        return; \
+    } while (0)
+
+#else
+
+#define DECLARE_INIT(x) \
+    void x(Handle<Object> exports)
+
+#define DECLARE_FUNC(x) \
+    Handle<Value> x(const Arguments& args)
+
+#define DECLARE_SCOPE \
+    HandleScope scope
+
+#define SET_BUFFER_RETURN(x, len) \
+    do { \
+        Buffer* buff = Buffer::New(x, len); \
+        return scope.Close(buff->handle_); \
+    } while (0)
+
+#define SET_BOOLEAN_RETURN(x) \
+    return scope.Close(Boolean::New(x));
+
+#define RETURN_EXCEPT(msg) \
+    return ThrowException(Exception::Error(String::New(msg)))
+
+#endif // NODE_MAJOR_VERSION
+
+#define DECLARE_CALLBACK(name, hash, output_len) \
+    DECLARE_FUNC(name) { \
+    DECLARE_SCOPE; \
+ \
+    if (args.Length() < 1) \
+        RETURN_EXCEPT("You must provide one argument."); \
+ \
+    Local<Object> target = args[0]->ToObject(); \
+ \
+    if(!Buffer::HasInstance(target)) \
+        RETURN_EXCEPT("Argument should be a buffer object."); \
+ \
+    char * input = Buffer::Data(target); \
+    char output[32]; \
+ \
+    uint32_t input_len = Buffer::Length(target); \
+ \
+    hash(input, output, input_len); \
+ \
+    SET_BUFFER_RETURN(output, output_len); \
+}
+
 NAN_METHOD(balloon) {
 	     RETURN_EXCEPT("You must provide buffer to hash");
 
